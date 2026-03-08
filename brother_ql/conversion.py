@@ -43,6 +43,8 @@ def convert(qlr, images, label,  **kwargs):
         * **dpi_600**
         * **hq**
         * **threshold**
+        * **half_cut** (``bool``) --
+          Enable half-cut (cuts label material but not backing paper).
     """
     label_specs = LabelsManager().get_label_by_identifier(label)
 
@@ -61,6 +63,7 @@ def convert(qlr, images, label,  **kwargs):
     dpi_600 = kwargs.get('dpi_600', False)
     hq = kwargs.get('hq', True)
     threshold = kwargs.get('threshold', 70)
+    half_cut = kwargs.get('half_cut', False)
     threshold = 100.0 - threshold
     threshold = min(255, max(0, int(threshold/100.0 * 255)))
 
@@ -183,6 +186,7 @@ def convert(qlr, images, label,  **kwargs):
             qlr.dpi_600 = dpi_600
             qlr.cut_at_end = cut
             qlr.two_color_printing = True if red else False
+            qlr.half_cut = half_cut
             qlr.add_expanded_mode()
         except BrotherQLUnsupportedCmd:
             pass

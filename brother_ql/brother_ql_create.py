@@ -28,6 +28,7 @@ def main():
     parser.add_argument('--600dpi', action='store_true', dest='dpi_600', help='Print with 600x300 dpi available on some models. Provide your image as 600x600 dpi; perpendicular to the feeding the image will be resized to 300dpi.')
     parser.add_argument('--lq', action='store_false', dest='hq', help='Print with low quality (faster). Default is high quality.')
     parser.add_argument('--no-cut', dest='cut', action='store_false', help="Don't cut the tape after printing the label.")
+    parser.add_argument('--half-cut', action='store_true', help='Enable half-cut (cuts label material but not backing paper).')
     parser.add_argument('--loglevel', type=lambda x: getattr(logging, x), default=logging.WARNING, help='Set to DEBUG for verbose debugging output to stderr.')
     args = parser.parse_args()
 
@@ -47,7 +48,7 @@ def main():
 
     qlr.exception_on_warning = True
 
-    create_label(qlr, args.image, args.label_size, threshold=args.threshold, cut=args.cut, rotate=args.rotate, dither=args.dither, compress=args.compress, red=args.red, dpi_600=args.dpi_600, hq=args.hq)
+    create_label(qlr, args.image, args.label_size, threshold=args.threshold, cut=args.cut, rotate=args.rotate, dither=args.dither, compress=args.compress, red=args.red, dpi_600=args.dpi_600, hq=args.hq, half_cut=args.half_cut)
 
     args.outfile.write(qlr.data)
 

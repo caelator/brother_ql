@@ -60,6 +60,7 @@ class BrotherQLRaster(object):
         self.cut_at_end = True
         self.dpi_600 = False
         self.two_color_printing = False
+        self.half_cut = False
         self._compression = False
         self.exception_on_warning = False
 
@@ -92,6 +93,10 @@ class BrotherQLRaster(object):
     @property
     def two_color_support(self):
         return self.model_obj.two_color
+
+    @property
+    def half_cut_support(self):
+        return self.model_obj.half_cut
 
     def add_initialize(self):
         self.page_number = 0
@@ -180,11 +185,15 @@ class BrotherQLRaster(object):
         if self.two_color_printing and not self.two_color_support:
             self._unsupported("Trying to set two_color_printing in expanded mode on a printer that doesn't support it.")
             return
+        if self.half_cut and not self.half_cut_support:
+            self._unsupported("Trying to set half_cut in expanded mode on a printer that doesn't support it.")
+            return
         self.data += b'\x1B\x69\x4B' # ESC i K
         flags = 0x00
+        flags |= self.two_color_printing << 0
+        flags |= self.half_cut << 2
         flags |= self.cut_at_end << 3
         flags |= self.dpi_600 << 6
-        flags |= self.two_color_printing << 0
         self.data += bytes([flags])
 
     def add_margins(self, dots=0x23):
