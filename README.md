@@ -2,7 +2,7 @@
 
 *A comprehensive raster language package for Brother QL series label printers (including QL-820NWBc).*
 
-> **Fork of [pklaus/brother\_ql](https://github.com/pklaus/brother_ql)** with half-cut support, enhanced model capabilities, and production-ready features.
+> **Fork of [pklaus/brother\_ql](https://github.com/pklaus/brother_ql)** with two-color DK-22251 support, enhanced model capabilities, and production-ready features.
 
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Python 3.6+](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/)
@@ -11,27 +11,25 @@
 
 ## What's New in This Fork
 
-### ✂️ Half-Cut Support
+### ✂️ Half-Cut Protocol Support
 
-Half-cut is a feature available on QL-800 series printers that cuts through the label material but **not** the backing paper. This is essential for:
+The `ESC i K` expanded mode command supports a half-cut bit (bit 2) that is intended to cut through the label material but **not** the backing paper.
 
-- **Multi-label jobs** — print seal + shipping labels on a continuous strip, half-cut between them for easy separation while keeping the strip intact for handling
-- **Peel-and-stick workflows** — half-cut labels peel cleanly from the backing
-- **Batch printing** — print multiple labels with half-cuts between, full-cut only at the end
+> ⚠️ **Hardware Limitation:** Testing on the QL-820NWBc confirmed that the QL-800 series uses a **guillotine-style cutter** that only performs full cuts. The half-cut protocol bit is accepted but the hardware cannot physically score the label without cutting through. Half-cut is a **P-touch (PT) series** feature (e.g., PT-P950NW). For QL-series multi-label jobs, use the **combined-strip approach**: render all labels as one continuous image with a visual tear-line separator, full-cut at the end only.
 
-#### How It Works
+#### Protocol Details
 
-Half-cut is controlled by **bit 2** of the `ESC i K` (expanded mode) command in the Brother QL raster protocol:
+Half-cut is controlled by **bit 2** of the `ESC i K` (expanded mode) command:
 
 ```
 ESC i K <flags>
   bit 0: two-color printing
-  bit 2: half-cut  ← NEW
+  bit 2: half-cut (PT-series only)
   bit 3: cut at end
   bit 6: 600 DPI
 ```
 
-When the printer's half-cut setting is enabled (via LCD menu or P-touch Editor), the standard auto-cut commands trigger a half-cut instead of a full cut. The `ESC i K` bit tells the printer to use half-cut mode in the raster stream.
+> **Important:** When using half-cut on supported (PT-series) printers, autocut (`ESC i M`) must be disabled — autocut overrides the half-cut mechanism. Cutting should be controlled entirely by `ESC i K` bits.
 
 #### Supported Models
 
@@ -44,9 +42,9 @@ When the printer's half-cut setting is enabled (via LCD menu or P-touch Editor),
 | QL-700 | ❌ | ❌ | ❌ | ❌ |
 | QL-710W | ❌ | ❌ | ❌ | ✅ |
 | QL-720NW | ❌ | ❌ | ❌ | ✅ |
-| **QL-800** | **✅** | **✅** | ❌ | ❌ |
-| **QL-810W** | **✅** | **✅** | ❌ | ✅ |
-| **QL-820NWB / QL-820NWBc** | **✅** | **✅** | ❌ | ✅ |
+| **QL-800** | **❌ (protocol only)** | **✅** | ❌ | ❌ |
+| **QL-810W** | **❌ (protocol only)** | **✅** | ❌ | ✅ |
+| **QL-820NWB / QL-820NWBc** | **❌ (protocol only)** | **✅** | ❌ | ✅ |
 | QL-1050 | ❌ | ❌ | ❌ | ✅ |
 | QL-1060N | ❌ | ❌ | ❌ | ✅ |
 | QL-1100 | ❌ | ❌ | ❌ | ✅ |
@@ -55,8 +53,8 @@ When the printer's half-cut setting is enabled (via LCD menu or P-touch Editor),
 ### 📝 Changes Summary
 
 #### `models.py`
-- Added `half_cut` attribute to the `Model` class
-- Enabled `half_cut=True` for QL-800, QL-810W, and QL-820NWB/NWBc models
+- Added `half_cut` attribute to the `Model` class (for PT-series compatibility)
+- QL-800 series: `half_cut=False` (hardware limitation — guillotine cutter)
 
 #### `raster.py`
 - Added `half_cut` property to `BrotherQLRaster`
