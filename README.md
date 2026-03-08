@@ -1,6 +1,6 @@
 # brother\_ql — Enhanced 🖨️
 
-*A comprehensive raster language package for Brother QL series label printers.*
+*A comprehensive raster language package for Brother QL series label printers (including QL-820NWBc).*
 
 > **Fork of [pklaus/brother\_ql](https://github.com/pklaus/brother_ql)** with half-cut support, enhanced model capabilities, and production-ready features.
 
@@ -46,7 +46,7 @@ When the printer's half-cut setting is enabled (via LCD menu or P-touch Editor),
 | QL-720NW | ❌ | ❌ | ❌ | ✅ |
 | **QL-800** | **✅** | **✅** | ❌ | ❌ |
 | **QL-810W** | **✅** | **✅** | ❌ | ✅ |
-| **QL-820NWB** | **✅** | **✅** | ❌ | ✅ |
+| **QL-820NWB / QL-820NWBc** | **✅** | **✅** | ❌ | ✅ |
 | QL-1050 | ❌ | ❌ | ❌ | ✅ |
 | QL-1060N | ❌ | ❌ | ❌ | ✅ |
 | QL-1100 | ❌ | ❌ | ❌ | ✅ |
@@ -56,7 +56,7 @@ When the printer's half-cut setting is enabled (via LCD menu or P-touch Editor),
 
 #### `models.py`
 - Added `half_cut` attribute to the `Model` class
-- Enabled `half_cut=True` for QL-800, QL-810W, and QL-820NWB models
+- Enabled `half_cut=True` for QL-800, QL-810W, and QL-820NWB/NWBc models
 
 #### `raster.py`
 - Added `half_cut` property to `BrotherQLRaster`
@@ -81,7 +81,7 @@ pip install -e .
 Or install directly from this fork:
 
 ```bash
-pip install git+https://github.com/clawbotai/brother_ql.git
+pip install git+https://github.com/caelator/brother_ql.git
 ```
 
 ## Usage
@@ -148,17 +148,13 @@ s.sendall(qlr.data)
 s.close()
 ```
 
-## Printer Setup for Half-Cut
+## How Half-Cut Works
 
-Before using half-cut via the raster protocol, ensure the **printer's firmware setting** is configured:
+Half-cut is **controlled entirely via the raster protocol** — there is no separate firmware menu setting for it on most printers (e.g., the QL-820NWBc only exposes autocut, cut-at-end, and none in its LCD settings).
 
-1. **On the printer LCD** (QL-820NWB):
-   - Navigate to Settings → Cut Settings → Half Cut → **ON**
+When bit 2 of the `ESC i K` expanded mode command is set in the raster stream, the printer performs a half-cut (cuts the label material but leaves the backing paper intact). A form-feed byte (`0x0C`) between pages triggers the half-cut, while the final print byte (`0x1A`) triggers a full cut.
 
-2. **Via P-touch Editor** (optional):
-   - Open Printer Settings → Device Settings → Half Cut → Enable
-
-Once enabled at the firmware level, the raster protocol's `ESC i K` bit 2 controls whether each page uses half-cut or full-cut.
+> **Tip:** Set the printer's cut mode to **auto-cut** for best results with half-cut jobs. The auto-cut setting works in conjunction with the raster protocol's half-cut flag.
 
 ## Optimal Print Quality Settings
 
@@ -210,4 +206,4 @@ This is a fork of [pklaus/brother\_ql](https://github.com/pklaus/brother_ql), wh
 ## Credits
 
 - **Original author:** [Philipp Klaus](https://github.com/pklaus) — created the brother\_ql library
-- **This fork:** [clawbotai](https://github.com/clawbotai) — added half-cut support and enhanced model capabilities
+- **This fork:** [Caelator](https://github.com/caelator) — added half-cut support and enhanced model capabilities
