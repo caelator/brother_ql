@@ -1,7 +1,7 @@
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **brother_ql** (205 symbols, 575 relationships, 20 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **brother_ql** (231 symbols, 597 relationships, 20 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
@@ -97,7 +97,7 @@ To check whether embeddings exist, inspect `.gitnexus/meta.json` — the `stats.
 | Rename / extract / split / refactor | `.claude/skills/gitnexus/gitnexus-refactoring/SKILL.md` |
 | Tools, resources, schema reference | `.claude/skills/gitnexus/gitnexus-guide/SKILL.md` |
 | Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
-| Work in the Brother_ql area (59 symbols) | `.claude/skills/generated/brother-ql/SKILL.md` |
-| Work in the Backends area (22 symbols) | `.claude/skills/generated/backends/SKILL.md` |
+| Work in the Brother_ql area (61 symbols) | `.claude/skills/generated/brother-ql/SKILL.md` |
+| Work in the Backends area (20 symbols) | `.claude/skills/generated/backends/SKILL.md` |
 
 <!-- gitnexus:end -->
