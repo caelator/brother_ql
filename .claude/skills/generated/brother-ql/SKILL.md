@@ -5,7 +5,7 @@ description: "Skill for the Brother_ql area of brother_ql. 61 symbols across 17 
 
 # Brother_ql
 
-61 symbols | 17 files | Cohesion: 65%
+61 symbols | 17 files | Cohesion: 66%
 
 ## When to Use
 
@@ -21,12 +21,12 @@ description: "Skill for the Brother_ql area of brother_ql. 61 symbols across 17 
 | `brother_ql/reader.py` | hex_format, chunker, match_opcode, interpret_response, merge_specific_instructions (+3) |
 | `brother_ql/cli.py` | info, discover, discover_and_list_available_devices, print_cmd, analyze_cmd (+2) |
 | `brother_ql/brother_ql_debug.py` | continue_reading, log_interp_response, print_and_debug, BrotherQL_USBdebug, main |
-| `brother_ql/exceptions.py` | BrotherQLError, BrotherQLUnsupportedCmd, BrotherQLRasterError, BrotherQLUnknownModel |
-| `brother_ql/output_helpers.py` | log_discovered_devices, textual_description_discovered_devices, textual_label_description |
+| `brother_ql/exceptions.py` | BrotherQLError, BrotherQLUnsupportedCmd, BrotherQLUnknownModel, BrotherQLRasterError |
 | `brother_ql/helpers.py` | get_element_by_identifier, ElementsManager, iter_identifiers |
-| `brother_ql/brother_ql_create.py` | main, create_label |
-| `brother_ql/backends/generic.py` | _write, write |
+| `brother_ql/output_helpers.py` | log_discovered_devices, textual_description_discovered_devices, textual_label_description |
 | `brother_ql/models.py` | get_model_by_identifier, ModelsManager |
+| `brother_ql/labels.py` | get_label_by_identifier, LabelsManager |
+| `brother_ql/brother_ql_create.py` | main, create_label |
 
 ## Entry Points
 
@@ -42,13 +42,13 @@ Start here when exploring this area:
 
 | Symbol | Type | File | Line |
 |--------|------|------|------|
-| `BrotherQLError` | Class | `brother_ql/exceptions.py` | 1 |
-| `BrotherQLUnsupportedCmd` | Class | `brother_ql/exceptions.py` | 4 |
-| `BrotherQLRasterError` | Class | `brother_ql/exceptions.py` | 10 |
 | `BrotherQL_USBdebug` | Class | `brother_ql/brother_ql_debug.py` | 10 |
 | `BrotherQLRaster` | Class | `brother_ql/raster.py` | 29 |
 | `BrotherQLReader` | Class | `brother_ql/reader.py` | 236 |
+| `BrotherQLError` | Class | `brother_ql/exceptions.py` | 1 |
+| `BrotherQLUnsupportedCmd` | Class | `brother_ql/exceptions.py` | 4 |
 | `BrotherQLUnknownModel` | Class | `brother_ql/exceptions.py` | 7 |
+| `BrotherQLRasterError` | Class | `brother_ql/exceptions.py` | 10 |
 | `LabelsManager` | Class | `brother_ql/labels.py` | 112 |
 | `ElementsManager` | Class | `brother_ql/helpers.py` | 5 |
 | `ModelsManager` | Class | `brother_ql/models.py` | 69 |
@@ -60,8 +60,8 @@ Start here when exploring this area:
 | `get_pixel_width` | Function | `brother_ql/raster.py` | 218 |
 | `add_raster_data` | Function | `brother_ql/raster.py` | 221 |
 | `add_print` | Function | `brother_ql/raster.py` | 268 |
-| `filtered_hsv` | Function | `brother_ql/image_trafos.py` | 3 |
-| `convert` | Function | `brother_ql/conversion.py` | 20 |
+| `get_model_by_identifier` | Function | `brother_ql/models.py` | 73 |
+| `get_label_by_identifier` | Function | `brother_ql/labels.py` | 116 |
 
 ## Execution Flows
 
